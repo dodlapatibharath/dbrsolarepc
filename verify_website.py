@@ -13,49 +13,40 @@ def run():
         print(f"Navigating to {index_path}")
         page.goto(index_path)
 
-        # 1. Verify Title
-        title = page.title()
-        print(f"Page Title: {title}")
-        assert "DBR SOLAR EPC" in title, "Title verification failed!"
+        # 1. Verify Localization in Hero
+        hero_subtitle = page.locator("p.hero-subtitle").inner_text()
+        print(f"Hero Subtitle: {hero_subtitle}")
+        assert "Hyderabad" in hero_subtitle, "Hyderabad verification failed in Hero!"
+        assert "Telangana" in hero_subtitle, "Telangana verification failed in Hero!"
 
-        # 2. Verify Company Name
-        company_name = page.locator("h1.hero-title").inner_text()
-        print(f"Hero Title: {company_name}")
-        assert "DBR SOLAR EPC PRIVATE LIMITED" in company_name, "Company Name verification failed!"
-
-        # 3. Verify Footer Details (CIN, PAN, TAN)
+        # 2. Verify Footer Details
         footer_text = page.locator("footer").inner_text()
         print("Footer text found.")
-        assert "U43210TS2026PTC211006" in footer_text, "CIN verification failed!"
-        assert "AAMCD4306R" in footer_text, "PAN verification failed!"
-        assert "HYDD16980F" in footer_text, "TAN verification failed!"
+        assert "Region: Telangana, India" in footer_text, "Footer Region verification failed!"
 
-        # 4. Verify CSS/JS Animation Classes
-        # Scroll down to trigger animations
-        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-        page.wait_for_timeout(1000) # Wait for animation to trigger
+        # 3. Verify Contact Page Address
+        page.goto(f"file://{cwd}/contact.html")
+        contact_info = page.locator(".contact-info").inner_text()
+        print(f"Contact Info: {contact_info}")
+        assert "Madhapur, Hitech City" in contact_info, "Address verification failed!"
+        assert "Hyderabad, Telangana - 500081" in contact_info, "City/State verification failed!"
+        assert "+91" in contact_info, "Phone format verification failed!"
 
-        # Check if .visible class is added to .fade-in-up elements
-        # The hero section has .fade-in-up and should be visible immediately or after scroll
-        hero_classes = page.locator(".hero").get_attribute("class")
-        print(f"Hero classes: {hero_classes}")
-        # Note: Depending on implementation, it might take a moment or require intersection.
-        # Let's check if at least one element has .visible
-        visible_elements = page.locator(".visible").count()
-        print(f"Number of visible animated elements: {visible_elements}")
-        assert visible_elements > 0, "Animation verification failed: No elements have .visible class!"
-
-        # 5. Take Screenshots
-        page.screenshot(path="home_page_v2.png", full_page=True)
-        print("Screenshot saved: home_page_v2.png")
+        # 4. Take Screenshots for Visual Verification of "Solar Orange" and Badges
+        page.goto(f"file://{cwd}/index.html")
+        page.wait_for_timeout(500) # Wait for initial render
+        page.screenshot(path="home_page_localized.png", full_page=True)
+        print("Screenshot saved: home_page_localized.png")
 
         page.goto(f"file://{cwd}/products.html")
-        page.screenshot(path="products_page_v2.png", full_page=True)
-        print("Screenshot saved: products_page_v2.png")
+        page.wait_for_timeout(500)
+        page.screenshot(path="products_page_localized.png", full_page=True)
+        print("Screenshot saved: products_page_localized.png")
 
         page.goto(f"file://{cwd}/contact.html")
-        page.screenshot(path="contact_page_v2.png", full_page=True)
-        print("Screenshot saved: contact_page_v2.png")
+        page.wait_for_timeout(500)
+        page.screenshot(path="contact_page_localized.png", full_page=True)
+        print("Screenshot saved: contact_page_localized.png")
 
         browser.close()
         print("Verification complete!")

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                entry.target.classList.remove('js-scroll-hidden');
                 entry.target.classList.add('visible');
                 observer.unobserve(entry.target); // Only animate once
             }
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, observerOptions);
 
     // Elements to animate
-    const animatedElements = document.querySelectorAll('.fade-in-up, .service-card, .product-card');
+    const animatedElements = document.querySelectorAll('.fade-in-up, .service-card, .product-card, .contact-info, .contact-form');
     animatedElements.forEach((el, index) => {
         // Add staggered delay for grid items
         if (el.classList.contains('service-card') || el.classList.contains('product-card')) {
@@ -35,6 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!el.classList.contains('fade-in-up')) {
             el.classList.add('fade-in-up');
         }
+
+        // Initial hidden state for animation (Progressive Enhancement)
+        el.classList.add('js-scroll-hidden');
 
         observer.observe(el);
     });

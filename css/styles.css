@@ -4,8 +4,8 @@
     --color-bg-alt: #f5f5f7;
     --color-text-main: #1d1d1f;
     --color-text-secondary: #86868b;
-    --color-accent: #0071e3; /* Apple-like Blue */
-    --color-accent-hover: #0077ed;
+    --color-accent: #ff7e14; /* Warm Solar Orange */
+    --color-accent-hover: #ff9f4b;
     --color-border: #d2d2d7;
     --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
@@ -107,7 +107,7 @@ p {
 }
 
 .btn-secondary:hover {
-    background-color: rgba(0, 113, 227, 0.1);
+    background-color: rgba(255, 126, 20, 0.1);
 }
 
 .btn-sm {
@@ -122,9 +122,12 @@ p {
 
 /* Animations */
 .fade-in-up {
+    transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.js-scroll-hidden {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .fade-in-up.visible {
@@ -322,13 +325,60 @@ p {
     padding-bottom: 80px;
 }
 
+.contact-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+}
+
+.contact-info {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: left;
+}
+
+.info-card h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: var(--color-accent);
+}
+
+.info-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-text-main);
+    margin-bottom: 8px;
+}
+
+.info-card a {
+    color: var(--color-text-main);
+    font-weight: 500;
+}
+
+.info-card a:hover {
+    color: var(--color-accent);
+}
+
 .contact-container {
-    max-width: 600px;
+    max-width: 980px;
 }
 
 .contact-form {
     background: #fff;
     padding: 40px;
+    flex: 1;
+    min-width: 300px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--color-border);
@@ -445,4 +495,23 @@ footer {
         align-items: center;
         text-align: center;
     }
+}
+
+/* Badges for Product Cards */
+.badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--color-accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 980px;
+    z-index: 2;
+    text-transform: uppercase;
+}
+
+.badge.subsidy {
+    background-color: #28a745; /* Green for environmental/govt approved */
 }
