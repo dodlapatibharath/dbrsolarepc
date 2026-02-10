@@ -110,4 +110,26 @@ document.addEventListener('DOMContentLoaded', () => {
             contactForm.reset();
         });
     }
+
+    const spawnEmber = () => {
+        const ember = document.createElement('span');
+        ember.className = 'dynamic-ember';
+        ember.style.setProperty('--x-start', `${Math.random() * 100}vw`);
+        ember.style.setProperty('--x-end', `${Math.random() * 100}vw`);
+        ember.style.left = '0';
+        ember.style.animationDuration = `${4 + Math.random() * 5}s`;
+        ember.style.animationDelay = `${Math.random() * 0.6}s`;
+        ember.style.opacity = `${0.45 + Math.random() * 0.5}`;
+        document.body.appendChild(ember);
+
+        ember.addEventListener('animationend', () => {
+            ember.remove();
+        });
+    };
+
+    setInterval(spawnEmber, 280);
+    for (let index = 0; index < 18; index += 1) {
+        setTimeout(spawnEmber, index * 130);
+    }
+
 });
