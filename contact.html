@@ -3,30 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Solar Services Marketplace</title>
+    <title>Contact SuryaRise EPC India</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1 class="logo">SolarMarket</h1>
+    <header class="site-header glass">
+        <div class="container nav-wrap">
+            <a href="index.html" class="logo">SuryaRise <span>EPC India</span></a>
             <nav>
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="products.html">Products</a></li>
+                    <li><a href="products.html">Solutions</a></li>
                     <li><a href="contact.html" class="active">Contact</a></li>
                 </ul>
             </nav>
+            <a class="btn btn-small" href="contact.html">Get Proposal</a>
         </div>
     </header>
 
-    <section class="contact">
-        <div class="container">
-            <h2>Contact Us</h2>
-            <p class="contact-intro">Have questions or need a quote? Fill out the form below and we'll get back to you shortly.</p>
-            <form id="contactForm">
+    <main class="section contact">
+        <div class="container contact-grid">
+            <div>
+                <h1>Let's Design Your Solar Project</h1>
+                <p class="contact-intro">Share your location, sanctioned load and monthly bill. Our India EPC team will respond with a preliminary plan within 24 hours.</p>
+                <div class="contact-cards">
+                    <article class="glass">
+                        <h3>Head Office</h3>
+                        <p>Ahmedabad, Gujarat, India</p>
+                    </article>
+                    <article class="glass">
+                        <h3>Email</h3>
+                        <p>hello@suryarisepc.in</p>
+                    </article>
+                    <article class="glass">
+                        <h3>Phone</h3>
+                        <p>+91 98765 43210</p>
+                    </article>
+                </div>
+            </div>
+            <form id="contactForm" class="glass">
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name">Full Name</label>
                     <input type="text" id="name" name="name" required>
                 </div>
                 <div class="form-group">
@@ -34,29 +54,46 @@
                     <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone (Optional)</label>
-                    <input type="tel" id="phone" name="phone">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
                 </div>
                 <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <select id="subject" name="subject">
-                        <option value="quote">Request a Quote</option>
-                        <option value="support">Technical Support</option>
-                        <option value="general">General Inquiry</option>
+                    <label for="city">City / State</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="segment">Project Segment</label>
+                    <select id="segment" name="segment" required>
+                        <option value="">Choose segment</option>
+                        <option value="residential">Residential</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="industrial">Industrial</option>
+                        <option value="utility">Utility Scale</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="message">Message</label>
+                    <label for="message">Project Requirements</label>
                     <textarea id="message" name="message" rows="5" required></textarea>
                 </div>
-                <button type="submit" class="btn">Send Message</button>
+                <button type="submit" class="btn">Submit Enquiry</button>
+                <p id="formStatus" class="form-status" aria-live="polite"></p>
             </form>
         </div>
-    </section>
+    </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2023 SolarMarket. All rights reserved.</p>
+        <div class="container footer-grid">
+            <div>
+                <h3>SuryaRise EPC India</h3>
+                <p>Trusted solar engineering for ambitious businesses.</p>
+            </div>
+            <div>
+                <h4>Service Regions</h4>
+                <p>Pan-India rollout with local partner network.</p>
+            </div>
+            <div>
+                <a href="products.html" class="btn btn-small">View Solutions</a>
+            </div>
         </div>
     </footer>
 
