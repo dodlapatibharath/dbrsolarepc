@@ -97,6 +97,20 @@ input, textarea {
 }
 .result, .price { color: var(--accent); font-weight: 700; }
 
+
+.calc-results {
+    display: grid;
+    gap: .2rem;
+    padding: .9rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255,255,255,.04);
+}
+
+.calc-results p { margin: .15rem 0; color: var(--muted); }
+.calc-results .result { color: var(--accent); }
+.calc-note { font-size: .85rem; }
+
 .timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: .8rem; }
 .timeline div { padding: 1rem; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid var(--border); }
 .timeline span { color: var(--primary); font-weight: 800; font-size: 1.2rem; display: block; margin-bottom: .3rem; }

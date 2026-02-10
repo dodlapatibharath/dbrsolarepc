@@ -30,21 +30,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const calculator = document.getElementById('solarCalculator');
     if (calculator) {
-        calculator.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const billInput = document.getElementById('bill');
-            const resultEl = document.getElementById('calcResult');
+        const billInput = document.getElementById('bill');
+        const tariffInput = document.getElementById('tariff');
+        const sunHoursInput = document.getElementById('sunHours');
+        const resultEl = document.getElementById('calcResult');
 
-            const monthlyBill = Number(billInput.value || 0);
-            if (monthlyBill < 500) {
-                resultEl.textContent = 'Please enter a valid bill amount above ₹500.';
+        const renderCalculatorResult = () => {
+            const monthlyBill = Number(billInput?.value || 0);
+            const tariff = Number(tariffInput?.value || 0);
+            const sunHours = Number(sunHoursInput?.value || 0);
+
+            if (monthlyBill < 500 || tariff < 4 || sunHours < 3) {
+                resultEl.innerHTML = '<p class="result">Enter valid values to calculate solar units.</p>';
                 return;
             }
 
-            const yearlyBill = monthlyBill * 12;
-            const estimatedSaving = yearlyBill * 0.65;
-            resultEl.textContent = `Approx annual savings: ₹${Math.round(estimatedSaving).toLocaleString('en-IN')}`;
+            const monthlyUnits = monthlyBill / tariff;
+            const requiredSystemKW = monthlyUnits / (sunHours * 30 * 0.8);
+            const roundedSystemKW = Math.max(1, Math.round(requiredSystemKW * 10) / 10);
+            const monthlySolarGeneration = roundedSystemKW * sunHours * 30 * 0.8;
+            const annualSavings = monthlySolarGeneration * tariff * 12 * 0.9;
+
+            resultEl.innerHTML = `
+                <p><strong>Monthly usage:</strong> ${Math.round(monthlyUnits).toLocaleString('en-IN')} units</p>
+                <p><strong>Recommended solar size:</strong> ${roundedSystemKW.toLocaleString('en-IN')} kW</p>
+                <p><strong>Expected monthly solar generation:</strong> ${Math.round(monthlySolarGeneration).toLocaleString('en-IN')} units</p>
+                <p><strong>Estimated annual savings:</strong> ₹${Math.round(annualSavings).toLocaleString('en-IN')}</p>
+                <p class="calc-note">*Estimate assumes ~80% performance ratio and ~90% bill offset.</p>
+            `;
+        };
+
+        [billInput, tariffInput, sunHoursInput].forEach((input) => {
+            input?.addEventListener('input', renderCalculatorResult);
         });
+
+        calculator.addEventListener('submit', (event) => {
+            event.preventDefault();
+            renderCalculatorResult();
+        });
+
+        renderCalculatorResult();
     }
 
     const testimonials = [

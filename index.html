@@ -116,12 +116,21 @@
             <div class="container calc-wrap">
                 <div>
                     <h2>Instant Savings Calculator</h2>
-                    <p>Enter monthly electricity expenditure to estimate yearly savings after switching to solar.</p>
+                    <p>Estimate required solar system size, monthly generation units and annual savings based on your current usage.</p>
                     <form id="solarCalculator" class="calc-form glass">
                         <label for="bill">Monthly Electricity Bill (₹)</label>
-                        <input type="number" id="bill" name="bill" min="500" required>
-                        <button type="submit" class="btn">Calculate Savings</button>
-                        <p class="result" id="calcResult">Approx annual savings will appear here.</p>
+                        <input type="number" id="bill" name="bill" min="500" step="100" value="3000" required>
+
+                        <label for="tariff">Average Grid Tariff (₹ / unit)</label>
+                        <input type="number" id="tariff" name="tariff" min="4" max="15" step="0.1" value="8" required>
+
+                        <label for="sunHours">Average Peak Sun Hours (per day)</label>
+                        <input type="number" id="sunHours" name="sunHours" min="3" max="7" step="0.1" value="4.5" required>
+
+                        <button type="submit" class="btn">Calculate Solar Units</button>
+                        <div class="calc-results" id="calcResult" aria-live="polite">
+                            <p class="result">Monthly solar units and savings estimate will appear here.</p>
+                        </div>
                     </form>
                 </div>
                 <div class="card glow">
