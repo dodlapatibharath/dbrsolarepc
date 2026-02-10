@@ -3,104 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact DBR Solar EPC Pvt Ltd</title>
+    <title>Contact | DBR Solar EPC Pvt Ltd</title>
+    <meta name="description" content="Contact DBR Solar EPC to schedule a survey or request pricing.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header class="site-header glass">
-        <div class="container nav-wrap">
-            <a href="index.html" class="logo">DBR Solar <span>EPC Pvt Ltd</span></a>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="products.html">Services</a></li>
-                    <li><a href="contact.html" class="active">Contact</a></li>
-                </ul>
-            </nav>
-            <a class="btn btn-small" href="contact.html">Get Proposal</a>
-        </div>
-    </header>
+<header class="site-header glass">
+    <div class="container nav-wrap">
+        <a href="index.html" class="logo">DBR Solar <span>EPC Pvt Ltd</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="products.html">Services</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="careers.html">Careers</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </nav>
+        <a class="btn btn-small" href="contact.html">Get Proposal</a>
+    </div>
+</header>
 
-    <main class="section contact">
-        <div class="container contact-grid">
-            <div>
-                <h1>Talk to Telangana Solar Experts</h1>
-                <p class="contact-intro">Share your address, sanctioned load and latest electricity bill. DBR Solar EPC team will contact you with a preliminary solar plan.</p>
-                <div class="contact-cards">
-                    <article class="glass">
-                        <h3>Company</h3>
-                        <p>DBR Solar EPC Private Limited</p>
-                    </article>
-                    <article class="glass">
-                        <h3>Registered Details</h3>
-                        <p>CIN: U43210TS2026PTC211006<br>PAN: AAMCD4306R<br>TAN: HYDD16980F</p>
-                    </article>
-                    <article class="glass">
-                        <h3>Service Hub</h3>
-                        <p>Hyderabad, Telangana, India</p>
-                    </article>
-                    <article class="glass">
-                        <h3>Email &amp; Phone</h3>
-                        <p>info@dbrsolarepc.com<br>+91 90000 12345</p>
-                    </article>
-                </div>
+<main class="section contact">
+    <div class="container">
+        <h1>Let’s Discuss Your Solar Project</h1>
+        <p class="lead">Tell us your monthly power consumption and site details. Our team will schedule a consultation.</p>
+
+        <div class="contact-grid">
+            <div class="contact-cards">
+                <article class="glass">
+                    <h3>Phone</h3>
+                    <p><a href="tel:+919000000000">+91 90000 00000</a></p>
+                </article>
+                <article class="glass">
+                    <h3>Email</h3>
+                    <p><a href="mailto:info@dbrsolarepc.in">info@dbrsolarepc.in</a></p>
+                </article>
+                <article class="glass">
+                    <h3>Office Hours</h3>
+                    <p>Mon–Sat · 9:30 AM to 6:30 PM</p>
+                </article>
             </div>
+
             <form id="contactForm" class="glass">
                 <div class="form-group">
-                    <label for="name">Full Name</label>
+                    <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="company">Company / Building</label>
+                    <input type="text" id="company" name="company">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
+                    <label for="phone">Phone</label>
                     <input type="tel" id="phone" name="phone" required>
                 </div>
                 <div class="form-group">
-                    <label for="city">City / District</label>
-                    <input type="text" id="city" name="city" placeholder="e.g. Hyderabad" required>
+                    <label for="load">Monthly Bill (₹)</label>
+                    <input type="number" id="load" name="load" min="500">
                 </div>
                 <div class="form-group">
-                    <label for="segment">Project Segment</label>
-                    <select id="segment" name="segment" required>
-                        <option value="">Choose segment</option>
-                        <option value="residential">Residential Rooftop</option>
-                        <option value="commercial">Commercial</option>
-                        <option value="industrial">Industrial</option>
-                        <option value="agri">Agriculture / Solar Pump</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="message">Project Requirements</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
+                    <label for="message">Project Requirement</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
                 </div>
                 <button type="submit" class="btn">Submit Enquiry</button>
-                <p id="formStatus" class="form-status" aria-live="polite"></p>
+                <p id="formStatus" class="form-status"></p>
             </form>
         </div>
-    </main>
+    </div>
+</main>
 
-    <footer>
-        <div class="container footer-grid">
-            <div>
-                <h3>DBR Solar EPC Private Limited</h3>
-                <p>Trusted local partner for solar installation in Telangana.</p>
-            </div>
-            <div>
-                <h4>Service Regions</h4>
-                <p>Hyderabad, Rangareddy, Medchal, Warangal, Nizamabad and Karimnagar.</p>
-            </div>
-            <div>
-                <a href="products.html" class="btn btn-small">View Services</a>
-            </div>
-        </div>
-    </footer>
+<footer>
+    <div class="container footer-grid">
+        <div><h3>DBR Solar EPC Pvt Ltd</h3><p>Clean power, engineered for performance.</p></div>
+        <div><h4>Quick Links</h4><p><a href="about.html">About</a> · <a href="products.html">Services</a> · <a href="projects.html">Projects</a></p></div>
+        <div><h4>Need Fast Support?</h4><p>Email <a href="mailto:info@dbrsolarepc.in">info@dbrsolarepc.in</a>.</p></div>
+    </div>
+</footer>
 
-    <script src="js/script.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
