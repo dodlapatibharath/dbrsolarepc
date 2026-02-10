@@ -49,16 +49,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const testimonials = [
         {
-            text: '"SuryaRise helped us cut power costs by 62% in 8 months. Their EPC execution was fast and professional."',
-            author: '— Operations Head, Textile Unit, Surat'
+            text: '"DBR Solar helped us cut our electricity expenses by nearly half within the first year of operation."',
+            author: '— Operations Head, Textile Unit, Patancheru'
         },
         {
-            text: '"Our 420kW rooftop plant was commissioned before schedule and all compliance tasks were handled seamlessly."',
-            author: '— Admin Director, Hospital Chain, Jaipur'
+            text: '"The DBR team completed our school rooftop project in Warangal quickly and professionally."',
+            author: '— Trustee, Educational Institution, Warangal'
         },
         {
-            text: '"Excellent project planning and monitoring support. Performance exceeded committed generation numbers."',
-            author: '— Plant Manager, Auto Components, Pune'
+            text: '"From site survey to net metering, the entire process in Karimnagar was smooth and transparent."',
+            author: '— Owner, Rice Mill, Karimnagar'
         }
     ];
 
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             const formStatus = document.getElementById('formStatus');
             if (formStatus) {
-                formStatus.textContent = 'Thank you! Your enquiry has been captured. Our EPC advisor will contact you shortly.';
+                formStatus.textContent = 'Thank you! Your enquiry has been captured. A DBR Solar EPC advisor will contact you shortly.';
             }
             contactForm.reset();
         });
