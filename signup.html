@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Sign Up | DBR Solar EPC Pvt Ltd</title>
+    <meta name="description" content="Create a customer account to track your DBR Solar EPC interactions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header glass">
+    <div class="container nav-wrap">
+        <a href="index.html" class="logo">DBR Solar <span>EPC Pvt Ltd</span></a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="products.html">Services</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="careers.html">Careers</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="signup.html" class="active">Sign Up</a></li>
+            </ul>
+        </nav>
+        <a class="btn btn-small" href="contact.html">Get Proposal</a>
+    </div>
+</header>
+
+<main class="section auth-page">
+    <div class="container auth-wrap">
+        <section class="glass auth-panel">
+            <p class="eyebrow">Customer Access</p>
+            <h1>Create your account</h1>
+            <p class="lead">Sign up to manage your contact details and get a faster response from our solar advisory team.</p>
+            <form id="signupForm" class="glass">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" minlength="8" required>
+                </div>
+                <button type="submit" class="btn">Create Account</button>
+                <p id="signupStatus" class="form-status"></p>
+                <p class="auth-link-text">Already have an account? <a href="login.html">Log in</a>.</p>
+            </form>
+        </section>
+    </div>
+</main>
+
+<footer>
+    <div class="container footer-grid">
+        <div><h3>DBR Solar EPC Pvt Ltd</h3><p>Clean power, engineered for performance.</p></div>
+        <div><h4>Quick Links</h4><p><a href="about.html">About</a> · <a href="products.html">Services</a> · <a href="projects.html">Projects</a></p></div>
+        <div><h4>Need Fast Support?</h4><p>Email <a href="mailto:info@dbrsolarepc.in">info@dbrsolarepc.in</a>.</p></div>
+    </div>
+</footer>
+
+<script src="js/script.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

@@ -150,3 +150,23 @@ footer p { color: var(--muted); margin: .25rem 0; }
     .stat-row { grid-template-columns: 1fr; }
     .two-col { columns: 1; }
 }
+
+.auth-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+}
+
+.auth-wrap {
+    max-width: 680px;
+}
+
+.auth-panel {
+    border-radius: 16px;
+    padding: 1.2rem;
+}
+
+.auth-link-text {
+    margin-bottom: 0;
+    color: var(--muted);
+}
