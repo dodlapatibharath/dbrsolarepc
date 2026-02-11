@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS customers (
+    id SERIAL PRIMARY KEY,
+    full_name VARCHAR(120) NOT NULL,
+    email VARCHAR(160) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    phone VARCHAR(25),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
