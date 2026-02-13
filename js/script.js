@@ -111,4 +111,117 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const componentTabs = document.getElementById('componentTabs');
+    const componentCards = document.getElementById('componentCards');
+
+    if (componentTabs && componentCards) {
+        const componentData = {
+            panels: {
+                label: 'Types of Panel',
+                items: [
+                    {
+                        name: 'Monocrystalline TOPCon',
+                        bestFor: 'High-efficiency rooftops with limited shadow-free space.',
+                        range: '540 Wp - 700 Wp',
+                        highlight: 'Excellent low-light and high-temperature performance.'
+                    },
+                    {
+                        name: 'Monocrystalline PERC',
+                        bestFor: 'Balanced cost and generation for homes and C&I rooftops.',
+                        range: '400 Wp - 550 Wp',
+                        highlight: 'Reliable technology with strong field track record.'
+                    },
+                    {
+                        name: 'Bifacial Modules',
+                        bestFor: 'Ground-mount and elevated shed projects with reflective surfaces.',
+                        range: '540 Wp - 720 Wp',
+                        highlight: 'Captures rear-side irradiance for higher yield.'
+                    }
+                ]
+            },
+            inverters: {
+                label: 'Types of Inverter',
+                items: [
+                    {
+                        name: 'String Inverter',
+                        bestFor: 'Commercial rooftops and distributed arrays.',
+                        range: '20 kW - 350 kW',
+                        highlight: 'Modular expansion and strong remote monitoring support.'
+                    },
+                    {
+                        name: 'Hybrid Inverter',
+                        bestFor: 'Sites requiring battery backup and smart load management.',
+                        range: '3 kW - 50 kW',
+                        highlight: 'Grid + solar + battery integration in one platform.'
+                    },
+                    {
+                        name: 'Central Inverter',
+                        bestFor: 'Large utility-scale and megawatt-class ground plants.',
+                        range: '500 kW - 4 MW',
+                        highlight: 'High-capacity conversion with reduced BOS complexity.'
+                    }
+                ]
+            },
+            structures: {
+                label: 'Types of Structures',
+                items: [
+                    {
+                        name: 'RCC Rooftop Elevated Structure',
+                        bestFor: 'Terrace projects requiring tilt optimization and walkway clearance.',
+                        range: 'Hot-dip galvanized steel',
+                        highlight: 'Durable corrosion protection and easy maintenance access.'
+                    },
+                    {
+                        name: 'Metal Sheet Roof Clamp Structure',
+                        bestFor: 'Industrial sheds with minimal roof penetration requirements.',
+                        range: 'Aluminum + SS fasteners',
+                        highlight: 'Lightweight profile for fast and secure installation.'
+                    },
+                    {
+                        name: 'Ground-Mount Fixed Tilt',
+                        bestFor: 'Open-land captive and utility-scale projects.',
+                        range: 'MS/HDG columns with concrete foundations',
+                        highlight: 'Optimized row spacing for shading-free generation.'
+                    }
+                ]
+            }
+        };
+
+        const renderCards = (key) => {
+            const selected = componentData[key];
+            componentCards.innerHTML = selected.items.map((item) => `
+                <article class="card glow dynamic-card">
+                    <p class="eyebrow">${selected.label}</p>
+                    <h3>${item.name}</h3>
+                    <p><strong>Best for:</strong> ${item.bestFor}</p>
+                    <p><strong>Typical range:</strong> ${item.range}</p>
+                    <p class="dynamic-note">${item.highlight}</p>
+                </article>
+            `).join('');
+        };
+
+        Object.entries(componentData).forEach(([key, value], index) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = `chip${index === 0 ? ' active' : ''}`;
+            button.textContent = value.label;
+            button.setAttribute('role', 'tab');
+            button.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
+
+            button.addEventListener('click', () => {
+                componentTabs.querySelectorAll('.chip').forEach((chip) => {
+                    chip.classList.remove('active');
+                    chip.setAttribute('aria-selected', 'false');
+                });
+                button.classList.add('active');
+                button.setAttribute('aria-selected', 'true');
+                renderCards(key);
+            });
+
+            componentTabs.appendChild(button);
+        });
+
+        renderCards('panels');
+    }
+
 });
