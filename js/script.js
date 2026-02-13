@@ -1,10 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-    document.querySelectorAll('nav a').forEach((link) => {
-        const href = link.getAttribute('href');
-        link.classList.toggle('active', href === currentPage);
-    });
+    const hasManualActiveLink = Boolean(document.querySelector('nav a.active'));
+    if (!hasManualActiveLink) {
+        document.querySelectorAll('nav a').forEach((link) => {
+            const href = link.getAttribute('href');
+            link.classList.toggle('active', href === currentPage);
+        });
+    }
 
     const counters = document.querySelectorAll('.counter');
     const animateCounter = (counter) => {
