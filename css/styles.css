@@ -282,6 +282,50 @@ form { padding: 1rem; border-radius: 14px; }
 footer { border-top: 1px solid var(--line); padding: 1.4rem 0; margin-top: 1.5rem; }
 footer p { color: var(--muted); margin: .25rem 0; }
 
+
+
+.component-explorer {
+    margin-top: 1.2rem;
+    border-radius: 16px;
+    padding: 1.1rem;
+}
+
+.explorer-head p {
+    color: var(--muted);
+    margin-top: -.35rem;
+}
+
+.chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin: .9rem 0 1rem;
+}
+
+.chip {
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--muted);
+    font-weight: 700;
+    border-radius: 999px;
+    padding: .5rem .9rem;
+    cursor: pointer;
+}
+
+.chip.active,
+.chip:hover {
+    color: #131a35;
+    background: linear-gradient(120deg, #c8a84c, #f0cb67, #c19b3b);
+}
+
+.dynamic-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.dynamic-note {
+    color: var(--accent);
+    margin-bottom: 0;
+}
 @media (max-width: 980px) {
     .hero { min-height: auto; }
     .hero-grid, .calc-wrap, .contact-grid { grid-template-columns: 1fr; }
