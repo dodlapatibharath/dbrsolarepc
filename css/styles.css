@@ -269,6 +269,33 @@ input, textarea {
 .timeline div { padding: 1rem; border-radius: 12px; background: rgba(23, 49, 95, .55); border: 1px solid var(--line); }
 .timeline span { color: var(--mint); font-weight: 800; font-size: 1.2rem; display: block; margin-bottom: .3rem; }
 
+.map-grid {
+    display: grid;
+    grid-template-columns: 1.5fr .9fr;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.map-canvas {
+    min-height: 500px;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    padding: .4rem;
+}
+
+.map-panel {
+    border-radius: 18px;
+}
+
+.map-panel h3 {
+    margin-bottom: .45rem;
+}
+
+.map-panel p {
+    color: var(--muted);
+    margin-top: 0;
+}
+
 .testimonial-box { border-radius: 14px; padding: 1.2rem; max-width: 850px; }
 .testimonial-box p { font-size: 1.1rem; margin-bottom: .5rem; }
 
@@ -328,7 +355,7 @@ footer p { color: var(--muted); margin: .25rem 0; }
 }
 @media (max-width: 980px) {
     .hero { min-height: auto; }
-    .hero-grid, .calc-wrap, .contact-grid { grid-template-columns: 1fr; }
+    .hero-grid, .calc-wrap, .contact-grid, .map-grid { grid-template-columns: 1fr; }
     .nav-wrap { flex-wrap: wrap; }
     .hero-cta { grid-template-columns: 1fr; }
     .btn-small { width: 100%; text-align: center; }

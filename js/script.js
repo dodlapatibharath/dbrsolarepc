@@ -75,6 +75,138 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCalculatorResult();
     }
 
+    const indiaMapElement = document.getElementById('indiaStateMap');
+    const stateNameEl = document.getElementById('selectedStateName');
+    const stateMetaEl = document.getElementById('selectedStateMeta');
+    const stateStatsEl = document.getElementById('selectedStateStats');
+
+    if (indiaMapElement && window.google?.charts) {
+        const tariffInput = document.getElementById('tariff');
+        const billInput = document.getElementById('bill');
+        const stateConfig = {
+            'IN-AP': { name: 'Andhra Pradesh', sunlight: 5.2, tariff: 7.3, billHint: 3400 },
+            'IN-AR': { name: 'Arunachal Pradesh', sunlight: 4.1, tariff: 5.4, billHint: 2200 },
+            'IN-AS': { name: 'Assam', sunlight: 4.3, tariff: 6.2, billHint: 2400 },
+            'IN-BR': { name: 'Bihar', sunlight: 4.7, tariff: 6.4, billHint: 2600 },
+            'IN-CT': { name: 'Chhattisgarh', sunlight: 5.1, tariff: 6.7, billHint: 2800 },
+            'IN-DL': { name: 'Delhi', sunlight: 5.0, tariff: 8.5, billHint: 4100 },
+            'IN-GA': { name: 'Goa', sunlight: 5.4, tariff: 8.1, billHint: 3600 },
+            'IN-GJ': { name: 'Gujarat', sunlight: 5.8, tariff: 7.8, billHint: 3900 },
+            'IN-HR': { name: 'Haryana', sunlight: 5.4, tariff: 7.2, billHint: 3300 },
+            'IN-HP': { name: 'Himachal Pradesh', sunlight: 4.8, tariff: 6.3, billHint: 2500 },
+            'IN-JH': { name: 'Jharkhand', sunlight: 4.7, tariff: 6.6, billHint: 2700 },
+            'IN-KA': { name: 'Karnataka', sunlight: 5.6, tariff: 7.4, billHint: 3500 },
+            'IN-KL': { name: 'Kerala', sunlight: 4.8, tariff: 7.1, billHint: 3200 },
+            'IN-MP': { name: 'Madhya Pradesh', sunlight: 5.5, tariff: 6.9, billHint: 3000 },
+            'IN-MH': { name: 'Maharashtra', sunlight: 5.5, tariff: 9.0, billHint: 4300 },
+            'IN-MN': { name: 'Manipur', sunlight: 4.2, tariff: 5.9, billHint: 2300 },
+            'IN-ML': { name: 'Meghalaya', sunlight: 4.0, tariff: 5.7, billHint: 2200 },
+            'IN-MZ': { name: 'Mizoram', sunlight: 4.1, tariff: 5.8, billHint: 2100 },
+            'IN-NL': { name: 'Nagaland', sunlight: 4.1, tariff: 6.0, billHint: 2200 },
+            'IN-OR': { name: 'Odisha', sunlight: 5.0, tariff: 6.8, billHint: 2900 },
+            'IN-PB': { name: 'Punjab', sunlight: 5.3, tariff: 7.0, billHint: 3200 },
+            'IN-RJ': { name: 'Rajasthan', sunlight: 6.0, tariff: 7.2, billHint: 3800 },
+            'IN-SK': { name: 'Sikkim', sunlight: 4.2, tariff: 5.6, billHint: 2100 },
+            'IN-TN': { name: 'Tamil Nadu', sunlight: 5.6, tariff: 7.5, billHint: 3600 },
+            'IN-TG': { name: 'Telangana', sunlight: 5.7, tariff: 7.4, billHint: 3500 },
+            'IN-TR': { name: 'Tripura', sunlight: 4.3, tariff: 5.9, billHint: 2300 },
+            'IN-UP': { name: 'Uttar Pradesh', sunlight: 5.0, tariff: 6.7, billHint: 3000 },
+            'IN-UT': { name: 'Uttarakhand', sunlight: 4.9, tariff: 6.5, billHint: 2700 },
+            'IN-WB': { name: 'West Bengal', sunlight: 4.7, tariff: 6.9, billHint: 3000 },
+            'IN-AN': { name: 'Andaman and Nicobar Islands', sunlight: 5.3, tariff: 7.2, billHint: 3200 },
+            'IN-CH': { name: 'Chandigarh', sunlight: 5.2, tariff: 7.3, billHint: 3400 },
+            'IN-DH': { name: 'Dadra and Nagar Haveli and Daman and Diu', sunlight: 5.4, tariff: 7.6, billHint: 3500 },
+            'IN-JK': { name: 'Jammu and Kashmir', sunlight: 4.9, tariff: 6.4, billHint: 2600 },
+            'IN-LA': { name: 'Ladakh', sunlight: 5.8, tariff: 6.2, billHint: 2400 },
+            'IN-LD': { name: 'Lakshadweep', sunlight: 5.5, tariff: 7.8, billHint: 3400 },
+            'IN-PY': { name: 'Puducherry', sunlight: 5.4, tariff: 7.4, billHint: 3300 }
+        };
+
+        const buildLiveDataRows = () => Object.entries(stateConfig).map(([code, config]) => {
+            const swing = (Math.random() * 18) - 9;
+            const liveIndex = Math.max(35, Math.round((config.sunlight * 16) + swing));
+            return [code, liveIndex];
+        });
+
+        let selectedStateCode = null;
+        let latestRows = buildLiveDataRows();
+        let chart;
+
+        const updateStatePanel = (stateCode, liveIndex) => {
+            const selected = stateConfig[stateCode];
+            if (!selected) return;
+
+            stateNameEl.textContent = selected.name;
+            stateMetaEl.textContent = `Live solar activity index: ${liveIndex}/100`;
+            stateStatsEl.innerHTML = `
+                <li><strong>Average sunlight:</strong> ${selected.sunlight.toFixed(1)} peak hours/day</li>
+                <li><strong>Typical grid tariff:</strong> ₹${selected.tariff.toFixed(1)} / unit</li>
+                <li><strong>Suggested starter bill value:</strong> ₹${selected.billHint.toLocaleString('en-IN')}</li>
+            `;
+
+            if (tariffInput) {
+                tariffInput.value = selected.tariff.toFixed(1);
+            }
+            if (billInput) {
+                billInput.value = selected.billHint;
+            }
+            tariffInput?.dispatchEvent(new Event('input', { bubbles: true }));
+            billInput?.dispatchEvent(new Event('input', { bubbles: true }));
+        };
+
+        const drawMap = () => {
+            const data = google.visualization.arrayToDataTable([
+                ['State Code', 'Live Activity'],
+                ...latestRows
+            ]);
+
+            const options = {
+                region: 'IN',
+                resolution: 'provinces',
+                backgroundColor: 'transparent',
+                datalessRegionColor: '#0d214c',
+                defaultColor: '#27457c',
+                keepAspectRatio: true,
+                legend: 'none',
+                colorAxis: { colors: ['#2d4f89', '#4f8ad4', '#74f1c0', '#f5d56f'] }
+            };
+
+            chart = chart || new google.visualization.GeoChart(indiaMapElement);
+            chart.draw(data, options);
+
+            google.visualization.events.removeAllListeners(chart);
+            google.visualization.events.addListener(chart, 'select', () => {
+                const selection = chart.getSelection();
+                if (!selection.length) return;
+
+                const row = selection[0].row;
+                const stateCode = data.getValue(row, 0);
+                const liveIndex = data.getValue(row, 1);
+                selectedStateCode = stateCode;
+                updateStatePanel(stateCode, liveIndex);
+            });
+
+            if (!selectedStateCode && latestRows.length) {
+                selectedStateCode = latestRows[0][0];
+                updateStatePanel(latestRows[0][0], latestRows[0][1]);
+            } else if (selectedStateCode) {
+                const selectedRow = latestRows.find(([code]) => code === selectedStateCode);
+                if (selectedRow) {
+                    updateStatePanel(selectedRow[0], selectedRow[1]);
+                }
+            }
+        };
+
+        google.charts.load('current', { packages: ['geochart'] });
+        google.charts.setOnLoadCallback(() => {
+            drawMap();
+            setInterval(() => {
+                latestRows = buildLiveDataRows();
+                drawMap();
+            }, 7000);
+        });
+    }
+
     const testimonials = [
         {
             text: '"DBR Solar helped us cut our electricity expenses by nearly half within the first year of operation."',

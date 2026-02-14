@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
     <header class="site-header glass">
@@ -111,6 +112,25 @@
                         <h3>Operations &amp; Maintenance</h3>
                         <p>AMC programs with preventive checks, cleaning schedules and annual performance benchmarking.</p>
                     </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="stateMap" class="section">
+            <div class="container">
+                <h2>Live India Solar Activity Map</h2>
+                <p class="lead">Track live, state-wise solar activity across India. Click your state to personalize the experience and get an instant context panel.</p>
+                <div class="map-grid">
+                    <div id="indiaStateMap" class="glass map-canvas" role="img" aria-label="Interactive India map with state solar activity"></div>
+                    <aside class="card glow map-panel" id="selectedStatePanel" aria-live="polite">
+                        <h3 id="selectedStateName">Select your state</h3>
+                        <p id="selectedStateMeta">Live state details and solar activity updates will appear here.</p>
+                        <ul class="list" id="selectedStateStats">
+                            <li>Map refresh: every 7 seconds</li>
+                            <li>Colors auto-scale with latest state activity</li>
+                            <li>Tap any state to highlight your location</li>
+                        </ul>
+                    </aside>
                 </div>
             </div>
         </section>
