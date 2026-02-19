@@ -1,0 +1,39 @@
+<svg width="780" height="300" viewBox="0 0 780 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">DBR Solar EPC logo</title>
+  <desc id="logoDesc">Sun and solar panel icon with DBR Solar EPC text.</desc>
+  <defs>
+    <linearGradient id="sunGradient" x1="245" y1="56" x2="245" y2="196" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD84D"/>
+      <stop offset="1" stop-color="#FF7A00"/>
+    </linearGradient>
+    <linearGradient id="panelGradient" x1="90" y1="130" x2="315" y2="238" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2A6EFF"/>
+      <stop offset="1" stop-color="#13206D"/>
+    </linearGradient>
+    <linearGradient id="swooshGradient" x1="70" y1="266" x2="398" y2="266" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#33B846"/>
+      <stop offset="1" stop-color="#0D844A"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="245" cy="138" r="82" fill="url(#sunGradient)"/>
+  <g stroke="#F4B21D" stroke-linecap="round" stroke-width="7">
+    <path d="M245 8V34"/><path d="M298 22L286 44"/><path d="M337 59L316 73"/><path d="M356 106L331 111"/><path d="M355 157L330 151"/><path d="M334 202L315 186"/><path d="M293 236L283 213"/>
+    <path d="M195 22L205 44"/><path d="M154 57L176 72"/><path d="M132 105L159 111"/><path d="M131 156L158 150"/><path d="M152 202L173 186"/><path d="M194 236L204 213"/>
+  </g>
+
+  <g transform="translate(84 120) skewX(14)">
+    <rect x="0" y="0" width="255" height="110" rx="12" fill="url(#panelGradient)" stroke="#EAF1FF" stroke-width="5"/>
+    <g stroke="#A9D7FF" stroke-width="4" opacity="0.9">
+      <path d="M0 35H255"/><path d="M0 70H255"/>
+      <path d="M63 0L80 110"/><path d="M128 0L145 110"/><path d="M192 0L208 110"/>
+    </g>
+  </g>
+
+  <path d="M70 255C130 205 243 195 390 240" stroke="url(#swooshGradient)" stroke-width="22" stroke-linecap="round"/>
+
+  <g transform="translate(406 110)">
+    <text x="0" y="70" font-size="98" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#FF7A00">DBR</text>
+    <text x="2" y="132" font-size="72" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#0D55B9">SOLAR EPC</text>
+  </g>
+</svg>
