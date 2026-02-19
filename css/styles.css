@@ -77,8 +77,12 @@ nav ul {
     gap: .52rem;
 }
 nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     color: #d7e4f8;
     font-weight: 700;
+    line-height: 1.2;
     padding: .56rem .95rem;
     border-radius: 999px;
     border: 1px solid rgba(121, 162, 215, 0.24);
@@ -370,6 +374,11 @@ footer p { color: var(--muted); margin: .25rem 0; }
     .hero { min-height: auto; }
     .hero-grid, .calc-wrap, .contact-grid { grid-template-columns: 1fr; }
     .nav-wrap { flex-wrap: wrap; }
+    nav { width: 100%; }
+    nav ul {
+        width: 100%;
+        row-gap: .72rem;
+    }
     .hero-cta { grid-template-columns: 1fr; }
     .btn-small { width: 100%; text-align: center; }
 }
