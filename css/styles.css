@@ -290,6 +290,46 @@ footer p { color: var(--muted); margin: .25rem 0; }
     padding: 1.1rem;
 }
 
+.mounting-structures {
+    margin-top: 1.4rem;
+}
+
+.mounting-head {
+    margin-bottom: .8rem;
+}
+
+.mounting-head h2 {
+    margin-bottom: .35rem;
+}
+
+.mounting-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: .9rem;
+}
+
+.mounting-card {
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+}
+
+.mounting-card img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid rgba(183, 209, 241, 0.3);
+}
+
+.mounting-card h3 {
+    margin-bottom: .05rem;
+}
+
+.mounting-card .list {
+    margin-top: 0;
+}
+
 .explorer-head p {
     color: var(--muted);
     margin-top: -.35rem;
