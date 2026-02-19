@@ -9,18 +9,14 @@ const app = express();
 const port = Number(process.env.PORT || 3000);
 const jwtSecret = process.env.JWT_SECRET;
 const databaseUrl = process.env.DATABASE_URL;
-
-if (!databaseUrl) {
-    throw new Error('Missing DATABASE_URL. Add it to your .env file.');
-}
-
-if (!jwtSecret) {
-    throw new Error('Missing JWT_SECRET. Add it to your .env file.');
-}
-
-const pool = new Pool({ connectionString: databaseUrl });
+const isAuthConfigured = Boolean(databaseUrl && jwtSecret);
+const pool = isAuthConfigured ? new Pool({ connectionString: databaseUrl }) : null;
 
 const runMigrations = async () => {
+    if (!pool) {
+        return;
+    }
+
     await pool.query(`
         CREATE TABLE IF NOT EXISTS customers (
             id SERIAL PRIMARY KEY,
@@ -36,7 +32,21 @@ const runMigrations = async () => {
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
+const requireAuthConfig = (res) => {
+    if (isAuthConfigured) {
+        return true;
+    }
+
+    return res.status(503).json({
+        message: 'Authentication is not configured on this server. Please set DATABASE_URL and JWT_SECRET.'
+    });
+};
+
 app.post('/api/auth/signup', async (req, res) => {
+    if (!requireAuthConfig(res)) {
+        return;
+    }
+
     const { fullName, email, password, phone } = req.body;
 
     if (!fullName || !email || !password) {
@@ -71,6 +81,10 @@ app.post('/api/auth/signup', async (req, res) => {
 });
 
 app.post('/api/auth/login', async (req, res) => {
+    if (!requireAuthConfig(res)) {
+        return;
+    }
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -121,6 +135,10 @@ app.get('/api/health', (_req, res) => {
 
 runMigrations()
     .then(() => {
+        if (!isAuthConfigured) {
+            console.warn('Auth APIs are disabled. Set DATABASE_URL and JWT_SECRET to enable login/signup.');
+        }
+
         app.listen(port, () => {
             console.log(`DBR Solar EPC app running on http://localhost:${port}`);
         });
