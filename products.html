@@ -142,6 +142,35 @@
             </div>
         </section>
 
+
+
+        <section class="payment-section glass" aria-labelledby="paymentSectionTitle">
+            <div class="payment-head">
+                <h2 id="paymentSectionTitle">Pay Booking Amount Online</h2>
+                <p>Securely pay your project booking amount using Razorpay. You can choose UPI, cards, net banking, or wallets during checkout.</p>
+            </div>
+            <form id="razorpayPaymentForm" class="payment-form" novalidate>
+                <div class="form-group">
+                    <label for="paymentName">Full Name</label>
+                    <input id="paymentName" name="paymentName" type="text" required placeholder="Your full name">
+                </div>
+                <div class="form-group">
+                    <label for="paymentEmail">Email</label>
+                    <input id="paymentEmail" name="paymentEmail" type="email" required placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="paymentPhone">Phone</label>
+                    <input id="paymentPhone" name="paymentPhone" type="tel" required placeholder="10-digit mobile number">
+                </div>
+                <div class="form-group">
+                    <label for="paymentAmount">Amount (INR)</label>
+                    <input id="paymentAmount" name="paymentAmount" type="number" min="1" step="1" required placeholder="Enter amount">
+                </div>
+                <button type="submit" class="btn">Pay with Razorpay</button>
+                <p id="paymentStatus" class="form-status" aria-live="polite"></p>
+            </form>
+        </section>
+
         <section class="component-explorer glass" aria-labelledby="componentExplorerTitle">
             <div class="explorer-head">
                 <h2 id="componentExplorerTitle">Ultra Dynamic Component Explorer</h2>
@@ -161,6 +190,7 @@
     </div>
 </footer>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

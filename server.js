@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { Pool } = require('pg');
 require('dotenv').config();
 
@@ -10,6 +11,11 @@ const port = Number(process.env.PORT || 3000);
 const jwtSecret = process.env.JWT_SECRET;
 const databaseUrl = process.env.DATABASE_URL;
 const isAuthConfigured = Boolean(databaseUrl && jwtSecret);
+
+const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
+const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
+const razorpayApiBase = 'https://api.razorpay.com/v1';
+const isRazorpayConfigured = Boolean(razorpayKeyId && razorpayKeySecret);
 const pool = isAuthConfigured ? new Pool({ connectionString: databaseUrl }) : null;
 
 const runMigrations = async () => {
@@ -127,6 +133,97 @@ app.post('/api/auth/login', async (req, res) => {
         console.error('Login error:', error);
         return res.status(500).json({ message: 'Unable to login at this time.' });
     }
+});
+
+
+const requireRazorpayConfig = (res) => {
+    if (isRazorpayConfigured) {
+        return true;
+    }
+
+    return res.status(503).json({
+        message: 'Payments are not configured on this server. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.'
+    });
+};
+
+app.post('/api/payments/razorpay/order', async (req, res) => {
+    if (!requireRazorpayConfig(res)) {
+        return;
+    }
+
+    const { amount, customerName, customerEmail, customerPhone } = req.body;
+    const normalizedAmount = Number(amount);
+
+    if (!Number.isFinite(normalizedAmount) || normalizedAmount < 1) {
+        return res.status(400).json({ message: 'A valid payment amount is required.' });
+    }
+
+    const amountInPaise = Math.round(normalizedAmount * 100);
+
+    try {
+        const orderPayload = {
+            amount: amountInPaise,
+            currency: 'INR',
+            receipt: `dbr_${Date.now()}`,
+            notes: {
+                customerName: String(customerName || '').trim().slice(0, 120),
+                customerEmail: String(customerEmail || '').trim().slice(0, 160),
+                customerPhone: String(customerPhone || '').trim().slice(0, 25)
+            }
+        };
+
+        const razorpayResponse = await fetch(`${razorpayApiBase}/orders`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Basic ${Buffer.from(`${razorpayKeyId}:${razorpayKeySecret}`).toString('base64')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderPayload)
+        });
+
+        if (!razorpayResponse.ok) {
+            const errorBody = await razorpayResponse.text();
+            console.error('Razorpay order creation failed:', errorBody);
+            return res.status(502).json({ message: 'Unable to create payment order right now.' });
+        }
+
+        const order = await razorpayResponse.json();
+
+        return res.status(201).json({
+            keyId: razorpayKeyId,
+            order
+        });
+    } catch (error) {
+        console.error('Create order error:', error);
+        return res.status(500).json({ message: 'Unable to initialize payment at this time.' });
+    }
+});
+
+app.post('/api/payments/razorpay/verify', (req, res) => {
+    if (!requireRazorpayConfig(res)) {
+        return;
+    }
+
+    const { razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
+
+    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
+        return res.status(400).json({ message: 'Missing payment verification details.' });
+    }
+
+    const expectedSignature = crypto
+        .createHmac('sha256', razorpayKeySecret)
+        .update(`${razorpayOrderId}|${razorpayPaymentId}`)
+        .digest('hex');
+
+    if (expectedSignature !== razorpaySignature) {
+        return res.status(400).json({ message: 'Payment signature verification failed.' });
+    }
+
+    return res.json({
+        message: 'Payment verified successfully.',
+        paymentId: razorpayPaymentId,
+        orderId: razorpayOrderId
+    });
 });
 
 app.get('/api/health', (_req, res) => {

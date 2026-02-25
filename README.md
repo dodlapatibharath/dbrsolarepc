@@ -16,7 +16,7 @@ A modern multi-page solar EPC website for DBR Solar EPC Pvt Ltd, now with custom
 - HTML5
 - CSS3 (glassmorphism + gradients + responsive layout)
 - Vanilla JavaScript (navigation state, animated counters, calculator, rotating testimonials, contact-form response)
-- Node.js + Express backend APIs for authentication
+- Node.js + Express backend APIs for authentication and Razorpay payment initialization
 - PostgreSQL database integration using `pg`
 
 ## Setup
@@ -57,12 +57,25 @@ Set these required environment variables:
 - `DATABASE_URL`
 - `JWT_SECRET`
 - `PORT` (usually provided by the hosting platform)
+- `RAZORPAY_KEY_ID`
+- `RAZORPAY_KEY_SECRET`
 
 Then run:
 ```bash
 npm install
 npm start
 ```
+
+
+## Payments API (Razorpay)
+- `POST /api/payments/razorpay/order`
+  - Body: `{ "amount": 5000, "customerName": "...", "customerEmail": "...", "customerPhone": "..." }`
+  - Creates a Razorpay order (amount in INR on request; backend converts to paise).
+- `POST /api/payments/razorpay/verify`
+  - Body: `{ "razorpayOrderId": "...", "razorpayPaymentId": "...", "razorpaySignature": "..." }`
+  - Verifies Razorpay payment signature using `RAZORPAY_KEY_SECRET`.
+
+Set `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` in your environment to enable payments.
 
 ## Authentication API
 - `POST /api/auth/signup`
