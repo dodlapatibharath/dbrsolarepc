@@ -114,6 +114,112 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
+    const razorpayPaymentForm = document.getElementById('razorpayPaymentForm');
+    if (razorpayPaymentForm) {
+        const statusEl = document.getElementById('paymentStatus');
+
+        razorpayPaymentForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            if (!window.Razorpay) {
+                if (statusEl) {
+                    statusEl.textContent = 'Unable to load Razorpay checkout. Please refresh and try again.';
+                }
+                return;
+            }
+
+            const name = document.getElementById('paymentName')?.value?.trim() || '';
+            const email = document.getElementById('paymentEmail')?.value?.trim() || '';
+            const phone = document.getElementById('paymentPhone')?.value?.trim() || '';
+            const amount = Number(document.getElementById('paymentAmount')?.value || 0);
+
+            if (!name || !email || !phone || amount < 1) {
+                if (statusEl) {
+                    statusEl.textContent = 'Please fill all payment fields with valid values.';
+                }
+                return;
+            }
+
+            if (statusEl) {
+                statusEl.textContent = 'Creating secure payment order...';
+            }
+
+            try {
+                const orderResponse = await fetch('/api/payments/razorpay/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount,
+                        customerName: name,
+                        customerEmail: email,
+                        customerPhone: phone
+                    })
+                });
+
+                const orderPayload = await orderResponse.json();
+                if (!orderResponse.ok) {
+                    throw new Error(orderPayload.message || 'Failed to initialize payment.');
+                }
+
+                const options = {
+                    key: orderPayload.keyId,
+                    amount: orderPayload.order.amount,
+                    currency: orderPayload.order.currency,
+                    name: 'DBR Solar EPC Pvt Ltd',
+                    description: 'Project Booking Payment',
+                    order_id: orderPayload.order.id,
+                    prefill: { name, email, contact: phone },
+                    theme: { color: '#00c7b2' },
+                    handler: async (response) => {
+                        const verifyResponse = await fetch('/api/payments/razorpay/verify', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                razorpayOrderId: response.razorpay_order_id,
+                                razorpayPaymentId: response.razorpay_payment_id,
+                                razorpaySignature: response.razorpay_signature
+                            })
+                        });
+
+                        const verifyPayload = await verifyResponse.json();
+                        if (!verifyResponse.ok) {
+                            throw new Error(verifyPayload.message || 'Payment verification failed.');
+                        }
+
+                        if (statusEl) {
+                            statusEl.textContent = `Payment successful. Payment ID: ${verifyPayload.paymentId}`;
+                        }
+                        razorpayPaymentForm.reset();
+                    },
+                    modal: {
+                        ondismiss: () => {
+                            if (statusEl) {
+                                statusEl.textContent = 'Payment cancelled.';
+                            }
+                        }
+                    }
+                };
+
+                const rzp = new window.Razorpay(options);
+                rzp.on('payment.failed', (paymentEvent) => {
+                    if (statusEl) {
+                        statusEl.textContent = paymentEvent.error.description || 'Payment failed. Please try again.';
+                    }
+                });
+                rzp.open();
+            } catch (error) {
+                if (statusEl) {
+                    statusEl.textContent = error.message || 'Unable to process payment at this time.';
+                }
+            }
+        });
+    }
+
     const componentTabs = document.getElementById('componentTabs');
     const componentCards = document.getElementById('componentCards');
 

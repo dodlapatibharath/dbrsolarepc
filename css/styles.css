@@ -288,6 +288,36 @@ footer p { color: var(--muted); margin: .25rem 0; }
 
 
 
+
+
+.payment-section {
+    margin: 1.4rem 0 1.1rem;
+    border-radius: 16px;
+    padding: 1.1rem;
+}
+
+.payment-head p {
+    color: var(--muted);
+    margin-top: -.2rem;
+}
+
+.payment-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: .7rem;
+    padding: 0;
+}
+
+.payment-form .btn {
+    align-self: end;
+    width: fit-content;
+}
+
+.payment-form .form-status {
+    grid-column: 1 / -1;
+    margin-top: 0;
+}
+
 .component-explorer {
     margin-top: 1.2rem;
     border-radius: 16px;
