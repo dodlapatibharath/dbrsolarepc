@@ -132,21 +132,56 @@
         <section id="calculator" class="section">
             <div class="container calc-wrap">
                 <div>
-                    <h2>Instant Savings Calculator</h2>
-                    <p>Estimate required solar system size, monthly generation units and annual savings based on your current usage.</p>
-                    <form id="solarCalculator" class="calc-form glass">
-                        <label for="bill">Monthly Electricity Bill (₹)</label>
-                        <input type="number" id="bill" name="bill" min="500" step="100" value="3000" required>
+                    <h2>Interactive Project Quotation Quiz</h2>
+                    <p>Select your preferred options in order to get a quick project estimate. We start with the structure, then module, then inverter.</p>
+                    <form id="quotationQuiz" class="calc-form glass" aria-label="Project quotation quiz">
+                        <div class="quiz-progress" aria-live="polite">
+                            <span class="quiz-step active" data-step="1">1. Structure</span>
+                            <span class="quiz-step" data-step="2">2. Module</span>
+                            <span class="quiz-step" data-step="3">3. Inverter</span>
+                        </div>
 
-                        <label for="tariff">Average Grid Tariff (₹ / unit)</label>
-                        <input type="number" id="tariff" name="tariff" min="4" max="15" step="0.1" value="8" required>
+                        <div class="quiz-panel" data-panel="1">
+                            <label for="structureType">Type of Structure</label>
+                            <select id="structureType" name="structureType" required>
+                                <option value="">Choose structure type</option>
+                                <option value="rcc_elevated">RCC Rooftop Elevated Structure</option>
+                                <option value="metal_sheet">Metal Sheet Roof Clamp Structure</option>
+                                <option value="ground_mount">Ground-Mount Fixed Tilt</option>
+                            </select>
+                            <button type="button" class="btn quiz-next" data-next="2">Next: Module Type</button>
+                        </div>
 
-                        <label for="sunHours">Average Peak Sun Hours (per day)</label>
-                        <input type="number" id="sunHours" name="sunHours" min="3" max="7" step="0.1" value="4.5" required>
+                        <div class="quiz-panel hidden" data-panel="2">
+                            <label for="moduleType">Type of Module</label>
+                            <select id="moduleType" name="moduleType" required>
+                                <option value="">Choose module type</option>
+                                <option value="topcon">Monocrystalline TOPCon</option>
+                                <option value="perc">Monocrystalline PERC</option>
+                                <option value="bifacial">Bifacial Modules</option>
+                            </select>
+                            <div class="quiz-actions">
+                                <button type="button" class="btn btn-ghost quiz-prev" data-prev="1">Back</button>
+                                <button type="button" class="btn quiz-next" data-next="3">Next: Inverter Type</button>
+                            </div>
+                        </div>
 
-                        <button type="submit" class="btn">Calculate Solar Units</button>
+                        <div class="quiz-panel hidden" data-panel="3">
+                            <label for="inverterType">Type of Inverter</label>
+                            <select id="inverterType" name="inverterType" required>
+                                <option value="">Choose inverter type</option>
+                                <option value="string">String Inverter</option>
+                                <option value="hybrid">Hybrid Inverter</option>
+                                <option value="central">Central Inverter</option>
+                            </select>
+                            <div class="quiz-actions">
+                                <button type="button" class="btn btn-ghost quiz-prev" data-prev="2">Back</button>
+                                <button type="submit" class="btn">Calculate Estimate</button>
+                            </div>
+                        </div>
+
                         <div class="calc-results" id="calcResult" aria-live="polite">
-                            <p class="result">Monthly solar units and savings estimate will appear here.</p>
+                            <p class="result">Complete all three steps to view your quotation estimate.</p>
                         </div>
                     </form>
                 </div>
@@ -161,6 +196,17 @@
                 </div>
             </div>
         </section>
+
+        <div id="quizWelcomeModal" class="quiz-modal hidden" role="dialog" aria-modal="true" aria-labelledby="quizWelcomeTitle">
+            <div class="quiz-modal-card glass">
+                <h3 id="quizWelcomeTitle">Start Your Fun Quotation Quiz</h3>
+                <p>After checking our company information, you can answer 3 quick choices and get an instant estimate for your project.</p>
+                <div class="quiz-actions">
+                    <button type="button" class="btn" id="startQuizBtn">Start Quiz</button>
+                    <button type="button" class="btn btn-ghost" id="closeQuizBtn">Maybe Later</button>
+                </div>
+            </div>
+        </div>
 
         <section id="process" class="section section-dark">
             <div class="container">
