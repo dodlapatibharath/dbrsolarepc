@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('pointermove', (event) => {
+        const x = `${(event.clientX / window.innerWidth) * 100}%`;
+        const y = `${(event.clientY / window.innerHeight) * 100}%`;
+        document.body.style.setProperty('--mouse-x', x);
+        document.body.style.setProperty('--mouse-y', y);
+    });
+
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
     const hasManualActiveLink = Boolean(document.querySelector('nav a.active'));
@@ -29,6 +36,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (counters.length) {
         counters.forEach(animateCounter);
+    }
+
+    const revealElements = document.querySelectorAll('.card, .service-card, .timeline div, .stat-row article, .testimonial-box');
+    if ('IntersectionObserver' in window && revealElements.length) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal', 'is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.22 });
+
+        revealElements.forEach((element) => {
+            element.classList.add('reveal');
+            observer.observe(element);
+        });
+    }
+
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        window.addEventListener('scroll', () => {
+            const offset = Math.min(80, window.scrollY * 0.12);
+            hero.style.backgroundPosition = `center ${offset}px`;
+        }, { passive: true });
+    }
+
+    const heroWord = document.querySelector('.hero h1 span');
+    if (heroWord) {
+        const words = ['rooftop', 'factory', 'campus', 'township'];
+        let wordIndex = 0;
+        setInterval(() => {
+            wordIndex = (wordIndex + 1) % words.length;
+            heroWord.textContent = words[wordIndex];
+        }, 2200);
     }
 
     const calculator = document.getElementById('solarCalculator');
@@ -100,6 +142,30 @@ document.addEventListener('DOMContentLoaded', () => {
             testimonialText.textContent = testimonials[current].text;
             testimonialName.textContent = testimonials[current].author;
         }, 4200);
+    }
+
+    const liveValueNodes = {
+        generation: document.querySelector('[data-live-value="generation"]'),
+        offset: document.querySelector('[data-live-value="offset"]'),
+        sites: document.querySelector('[data-live-value="sites"]')
+    };
+    if (liveValueNodes.generation && liveValueNodes.offset && liveValueNodes.sites) {
+        const start = {
+            generation: 12840,
+            offset: 10670,
+            sites: 42
+        };
+        const updateLiveMetrics = () => {
+            start.generation += Math.round(Math.random() * 28 + 9);
+            start.offset += Math.round(Math.random() * 21 + 7);
+            start.sites += Math.random() > 0.8 ? 1 : 0;
+
+            liveValueNodes.generation.textContent = `${start.generation.toLocaleString('en-IN')} kWh`;
+            liveValueNodes.offset.textContent = `${start.offset.toLocaleString('en-IN')} kg CO₂`;
+            liveValueNodes.sites.textContent = start.sites.toLocaleString('en-IN');
+        };
+        updateLiveMetrics();
+        setInterval(updateLiveMetrics, 2400);
     }
 
     const contactForm = document.getElementById('contactForm');
