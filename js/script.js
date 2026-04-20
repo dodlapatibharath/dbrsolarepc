@@ -63,6 +63,80 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
+    const dynamicBackdrop = document.createElement('div');
+    dynamicBackdrop.className = 'dynamic-backdrop';
+    document.body.prepend(dynamicBackdrop);
+
+    const energyTrail = document.createElement('div');
+    energyTrail.className = 'energy-trail';
+    document.body.appendChild(energyTrail);
+
+    Array.from({ length: 14 }, (_, index) => {
+        const particle = document.createElement('span');
+        particle.className = 'dynamic-particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${index * 0.38}s`;
+        particle.style.animationDuration = `${10 + Math.random() * 7}s`;
+        dynamicBackdrop.appendChild(particle);
+        return particle;
+    });
+
+    let lastPointerX = window.innerWidth * 0.5;
+    let lastPointerY = window.innerHeight * 0.4;
+
+    const updatePointerVisuals = () => {
+        energyTrail.style.transform = `translate(${lastPointerX - 65}px, ${lastPointerY - 65}px)`;
+    };
+
+    updatePointerVisuals();
+
+    document.addEventListener('pointermove', (event) => {
+        lastPointerX = event.clientX;
+        lastPointerY = event.clientY;
+        updatePointerVisuals();
+    });
+
+    document.querySelectorAll('.btn, .card, .service-card, .info-pill').forEach((node) => {
+        node.addEventListener('pointermove', (event) => {
+            const rect = node.getBoundingClientRect();
+            const rotateY = ((event.clientX - rect.left) / rect.width - 0.5) * 8;
+            const rotateX = ((event.clientY - rect.top) / rect.height - 0.5) * -8;
+            node.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-2px)`;
+        });
+
+        node.addEventListener('pointerleave', () => {
+            node.style.transform = '';
+        });
+    });
+
+    const kpiNodes = Array.from(document.querySelectorAll('.stat-row article'));
+    if (kpiNodes.length) {
+        setInterval(() => {
+            const picked = kpiNodes[Math.floor(Math.random() * kpiNodes.length)];
+            picked.classList.add('pulse-kpi');
+            setTimeout(() => picked.classList.remove('pulse-kpi'), 900);
+        }, 1800);
+    }
+
+    const visionSnippets = [
+        'Monitoring in real time',
+        'Fine-tuning every kilowatt',
+        'Dispatching quality on schedule',
+        'Driving measurable savings'
+    ];
+    const sideHeading = document.querySelector('.side-headings p');
+    if (sideHeading) {
+        let copyIndex = 0;
+        setInterval(() => {
+            copyIndex = (copyIndex + 1) % visionSnippets.length;
+            sideHeading.classList.add('fade-copy');
+            setTimeout(() => {
+                sideHeading.textContent = visionSnippets[copyIndex];
+                sideHeading.classList.remove('fade-copy');
+            }, 180);
+        }, 3400);
+    }
+
     const heroWord = document.querySelector('.hero h1 span');
     if (heroWord) {
         const words = ['rooftop', 'factory', 'campus', 'township'];
@@ -71,114 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
             wordIndex = (wordIndex + 1) % words.length;
             heroWord.textContent = words[wordIndex];
         }, 2200);
-    }
-
-    const quotationQuiz = document.getElementById('quotationQuiz');
-    if (quotationQuiz) {
-        const structureInput = document.getElementById('structureType');
-        const moduleInput = document.getElementById('moduleType');
-        const inverterInput = document.getElementById('inverterType');
-        const resultEl = document.getElementById('calcResult');
-        const progressSteps = Array.from(quotationQuiz.querySelectorAll('.quiz-step'));
-        const panels = Array.from(quotationQuiz.querySelectorAll('.quiz-panel'));
-
-        const quizPricing = {
-            structures: {
-                rcc_elevated: { label: 'RCC Rooftop Elevated Structure', factor: 1.06 },
-                metal_sheet: { label: 'Metal Sheet Roof Clamp Structure', factor: 1.0 },
-                ground_mount: { label: 'Ground-Mount Fixed Tilt', factor: 1.12 }
-            },
-            modules: {
-                topcon: { label: 'Monocrystalline TOPCon', factor: 1.16 },
-                perc: { label: 'Monocrystalline PERC', factor: 1.0 },
-                bifacial: { label: 'Bifacial Modules', factor: 1.12 }
-            },
-            inverters: {
-                string: { label: 'String Inverter', factor: 1.0 },
-                hybrid: { label: 'Hybrid Inverter', factor: 1.18 },
-                central: { label: 'Central Inverter', factor: 1.09 }
-            }
-        };
-
-        const showStep = (stepNumber) => {
-            panels.forEach((panel) => {
-                panel.classList.toggle('hidden', Number(panel.dataset.panel) !== stepNumber);
-            });
-            progressSteps.forEach((step) => {
-                step.classList.toggle('active', Number(step.dataset.step) === stepNumber);
-            });
-        };
-
-        const moveStep = (targetStep) => {
-            const selectedStructure = structureInput?.value;
-            const selectedModule = moduleInput?.value;
-            if (targetStep === 2 && !selectedStructure) {
-                resultEl.innerHTML = '<p class="result">Please select a structure type to continue.</p>';
-                return;
-            }
-            if (targetStep === 3 && !selectedModule) {
-                resultEl.innerHTML = '<p class="result">Please select a module type to continue.</p>';
-                return;
-            }
-            showStep(targetStep);
-        };
-
-        quotationQuiz.querySelectorAll('.quiz-next').forEach((button) => {
-            button.addEventListener('click', () => moveStep(Number(button.dataset.next)));
-        });
-
-        quotationQuiz.querySelectorAll('.quiz-prev').forEach((button) => {
-            button.addEventListener('click', () => showStep(Number(button.dataset.prev)));
-        });
-
-        quotationQuiz.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const structure = quizPricing.structures[structureInput?.value];
-            const moduleType = quizPricing.modules[moduleInput?.value];
-            const inverter = quizPricing.inverters[inverterInput?.value];
-
-            if (!structure || !moduleType || !inverter) {
-                resultEl.innerHTML = '<p class="result">Please complete all three selections to calculate estimate.</p>';
-                return;
-            }
-
-            const baseSystemSize = 10;
-            const basePricePerKW = 46000;
-            const combinedFactor = structure.factor * moduleType.factor * inverter.factor;
-            const estimatedSystemKW = Math.round(baseSystemSize * combinedFactor * 10) / 10;
-            const estimatedPrice = Math.round(estimatedSystemKW * basePricePerKW);
-            const annualGeneration = Math.round(estimatedSystemKW * 4.5 * 365 * 0.8);
-
-            resultEl.innerHTML = `
-                <p><strong>Structure:</strong> ${structure.label}</p>
-                <p><strong>Module:</strong> ${moduleType.label}</p>
-                <p><strong>Inverter:</strong> ${inverter.label}</p>
-                <p><strong>Estimated system size:</strong> ${estimatedSystemKW.toLocaleString('en-IN')} kW</p>
-                <p><strong>Estimated project quotation:</strong> ₹${estimatedPrice.toLocaleString('en-IN')}</p>
-                <p><strong>Estimated yearly generation:</strong> ${annualGeneration.toLocaleString('en-IN')} units</p>
-                <p class="calc-note">*Indicative estimate. Final quote depends on site survey, shadow analysis, and electrical scope.</p>
-            `;
-        });
-
-        showStep(1);
-    }
-
-    const quizWelcomeModal = document.getElementById('quizWelcomeModal');
-    const startQuizBtn = document.getElementById('startQuizBtn');
-    const closeQuizBtn = document.getElementById('closeQuizBtn');
-    if (quizWelcomeModal && startQuizBtn && closeQuizBtn) {
-        setTimeout(() => {
-            quizWelcomeModal.classList.remove('hidden');
-        }, 1200);
-
-        startQuizBtn.addEventListener('click', () => {
-            quizWelcomeModal.classList.add('hidden');
-            document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-
-        closeQuizBtn.addEventListener('click', () => {
-            quizWelcomeModal.classList.add('hidden');
-        });
     }
 
     const testimonials = [
