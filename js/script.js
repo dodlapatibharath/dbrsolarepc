@@ -63,6 +63,80 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
+    const dynamicBackdrop = document.createElement('div');
+    dynamicBackdrop.className = 'dynamic-backdrop';
+    document.body.prepend(dynamicBackdrop);
+
+    const energyTrail = document.createElement('div');
+    energyTrail.className = 'energy-trail';
+    document.body.appendChild(energyTrail);
+
+    Array.from({ length: 14 }, (_, index) => {
+        const particle = document.createElement('span');
+        particle.className = 'dynamic-particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${index * 0.38}s`;
+        particle.style.animationDuration = `${10 + Math.random() * 7}s`;
+        dynamicBackdrop.appendChild(particle);
+        return particle;
+    });
+
+    let lastPointerX = window.innerWidth * 0.5;
+    let lastPointerY = window.innerHeight * 0.4;
+
+    const updatePointerVisuals = () => {
+        energyTrail.style.transform = `translate(${lastPointerX - 65}px, ${lastPointerY - 65}px)`;
+    };
+
+    updatePointerVisuals();
+
+    document.addEventListener('pointermove', (event) => {
+        lastPointerX = event.clientX;
+        lastPointerY = event.clientY;
+        updatePointerVisuals();
+    });
+
+    document.querySelectorAll('.btn, .card, .service-card, .info-pill').forEach((node) => {
+        node.addEventListener('pointermove', (event) => {
+            const rect = node.getBoundingClientRect();
+            const rotateY = ((event.clientX - rect.left) / rect.width - 0.5) * 8;
+            const rotateX = ((event.clientY - rect.top) / rect.height - 0.5) * -8;
+            node.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-2px)`;
+        });
+
+        node.addEventListener('pointerleave', () => {
+            node.style.transform = '';
+        });
+    });
+
+    const kpiNodes = Array.from(document.querySelectorAll('.stat-row article'));
+    if (kpiNodes.length) {
+        setInterval(() => {
+            const picked = kpiNodes[Math.floor(Math.random() * kpiNodes.length)];
+            picked.classList.add('pulse-kpi');
+            setTimeout(() => picked.classList.remove('pulse-kpi'), 900);
+        }, 1800);
+    }
+
+    const visionSnippets = [
+        'Monitoring in real time',
+        'Fine-tuning every kilowatt',
+        'Dispatching quality on schedule',
+        'Driving measurable savings'
+    ];
+    const sideHeading = document.querySelector('.side-headings p');
+    if (sideHeading) {
+        let copyIndex = 0;
+        setInterval(() => {
+            copyIndex = (copyIndex + 1) % visionSnippets.length;
+            sideHeading.classList.add('fade-copy');
+            setTimeout(() => {
+                sideHeading.textContent = visionSnippets[copyIndex];
+                sideHeading.classList.remove('fade-copy');
+            }, 180);
+        }, 3400);
+    }
+
     const heroWord = document.querySelector('.hero h1 span');
     if (heroWord) {
         const words = ['rooftop', 'factory', 'campus', 'township'];
